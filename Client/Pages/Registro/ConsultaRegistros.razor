@@ -1,0 +1,221 @@
+﻿@page "/consultaregistros"
+@using ControWell.Client.Services.RegistroService;
+@using ControWell.Client.Services.PozoService;
+@using ControWell.Client.Services.VariableProcesoService;
+@inject HttpClient Http
+@inject NavigationManager NanigationManager
+@inject IRegistroService RegistroService
+@using ControWell.Shared
+@using System.Net.Http.Json
+@using System.Linq
+
+
+<h3>Consutas</h3>
+<h3>Pozos registrados por variable</h3>
+
+<EditForm Model="registroFiltro" class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5>Consultar y Exportar</h5>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="form-row align-items-end">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="">
+                                    <label class="form-text">Pozo</label>
+                                    <InputSelect class="form-select" @bind-Value=registroFiltro.PozoId>
+                                        @foreach (var pozo in Pozos)
+                                        {
+                                            <option value="@pozo.Id">@pozo.NombrePozo</option>
+                                        }
+
+                                    </InputSelect>
+                                </div>
+                                
+                                <div class="">
+                                    <label class="form-text">Variables de proceso</label>
+                                    <div class="" style="height:'300px'">
+                                        @if (1 == 1)//este 1=1 es solo para que entre a realizar la accion
+                                        {
+                                            var VarRegPorPozo = from re in Registros//alarmas para ese pozo en especifico
+                                                                where re.PozoId == registroFiltro.PozoId
+                                                                select re.VariableProceso;
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Nombre Variable</td>
+                                                        <td>Selec</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var i in Variables)
+                                                    {
+                                                        <tr>
+                                                            <td>@i.Nombre</td>
+                                                            <td>
+                                                                <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                            //<option value="@v.Id">@v.Nombre</option>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-6">
+                                <div class="">
+                                    <div class="app-card app-card-chart h-100 shadow-sm">
+                                        <div class="app-card-header p-3">
+                                            <div class="row justify-content-between align-items-center">
+                                                <div class="col-auto">
+                                                    <h4 class="app-card-title">Line Chart Example</h4>
+                                                </div><!--//col-->
+                                                <div class="col-auto">
+                                                    <div class="card-header-action">
+                                                        <a href="charts.html">More charts</a>
+                                                    </div><!--//card-header-actions-->
+                                                </div><!--//col-->
+                                            </div><!--//row-->
+                                        </div><!--//app-card-header-->
+                                        <div class="app-card-body p-3 p-lg-4">
+                                            <div class="mb-3 d-flex">
+                                                <select class="form-select form-select-sm ms-auto d-inline-flex w-auto">
+                                                    <option value="1" selected>This week</option>
+                                                    <option value="2">Today</option>
+                                                    <option value="3">This Month</option>
+                                                    <option value="3">This Year</option>
+                                                </select>
+                                            </div>
+                                            <div class="chart-container">
+                                                <canvas id="canvas-linechart"></canvas>
+                                            </div>
+                                        </div><!--//app-card-body-->
+                                    </div><!--//app-card-->
+                                </div><!--//col-->
+                            </div>
+                        </div>
+ 
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="form-text">Fecha inicio</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-text">Fecha Fin</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-12">
+                            <button class="btn btn-success">Ver</button>
+                            <button class="btn btn-success" >Export as XLXS</button>
+                            <button class="btn btn-warning">Export as PDF</button>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body">
+                        <div class="col-12">
+                            <div class="shadow-sm">
+                                <div class="card-header">
+                                    <h5>Registro por pozo y variables</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Variable</th>
+                                                <th>Medida</th>
+                                                <th>unidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                         @foreach(var r in Registros)
+                                            {
+                                                if (registroFiltro.PozoId == r.PozoId && registroFiltro.VariableProcesoId==r.VariableProcesoId)
+                                                {
+                                                <tr>
+                                                    <td>@r.FechaHora</td>
+                                                    <td>@r.VariableProceso.Nombre</td>
+                                                    <td>@r.Medida</td>
+                                                    <td>@r.VariableProceso.Unidad</td>
+                                                </tr>
+                                                }
+                                               
+                                            }  
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>    
+</EditForm>
+  
+
+@code{
+    [Parameter]
+
+    public int? Id { get; set; }
+
+    Registro registro = new Registro();
+    Registro registroFiltro = new Registro();
+    VariableProceso variable = new VariableProceso();
+    DateTime hora = new DateTime();
+    Pozo pozo = new Pozo();
+
+
+    public static List<VariableProceso> Variables = new List<VariableProceso>();
+
+    public static List<Pozo> Pozos = new List<Pozo>();
+    public static List<Registro> Registros = new List<Registro>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var mivariable = await Http.GetFromJsonAsync<List<VariableProceso>>("api/VariableProceso");
+        if (mivariable != null)
+            Variables = mivariable;
+
+
+        var mipozo = await Http.GetFromJsonAsync<List<Pozo>>("api/Pozo");
+        if (mipozo != null)
+            Pozos = mipozo;
+
+        var miregistro = await Http.GetFromJsonAsync<List<Registro>>("api/Registro");
+        if (miregistro != null)
+            Registros = miregistro;
+
+
+    }
+
+
+    async Task EnviarRegistro()
+    {
+        await RegistroService.CreateRegistro(registro);
+
+    }
+
+    //Linq para traer los los registros por pozo y fecha y variable
+
+
+}
+
