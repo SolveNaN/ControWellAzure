@@ -321,6 +321,10 @@ namespace ControWell.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Material")
+    .IsRequired()
+    .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Tanques");

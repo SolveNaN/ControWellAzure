@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dagoberto\\Documents\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj": {}
+    "C:\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dagoberto\\Documents\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj": {
+    "C:\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dagoberto\\Documents\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj",
+        "projectUniqueName": "C:\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj",
         "projectName": "ControWell.Shared",
-        "projectPath": "C:\\Users\\Dagoberto\\Documents\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj",
+        "projectPath": "C:\\AppPetra\\ControWell\\Shared\\ControWell.Shared.csproj",
         "packagesPath": "C:\\Users\\Dagoberto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dagoberto\\Documents\\AppPetra\\ControWell\\Shared\\obj\\",
+        "outputPath": "C:\\AppPetra\\ControWell\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dagoberto\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,24 +39,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Json.Net": {
-              "target": "Package",
-              "version": "[1.0.33, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.2, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            },
-            "libs.XSSFWorkbook": {
-              "target": "Package",
-              "version": "[1.0.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -83,9 +65,6 @@
             }
           ],
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

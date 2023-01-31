@@ -8,42 +8,8 @@ using ControWell.Shared;
 using EFCore.BulkExtensions;
 using ControWell.Shared;
 using System.Diagnostics.Contracts;
-
+using ClosedXML.Excel;
 using System.Data;
-
-
-using ControWell.Shared;
-using System.Net.Http.Json;
-using System.Linq;
-using NPOI.XSSF.UserModel;
-
-using System.Data;
-
-using  System.Data.SqlClient;
-using System.IO;
-
-
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.SS.Util;
-using NPOI.HSSF.Util;
-using NPOI.POIFS.FileSystem;
-using NPOI.HPSF;
-using NPOI.XSSF.Model;
-using System.IO;
-
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
-
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.SS.Util;
-using NPOI.HSSF.Util;
-using NPOI.POIFS.FileSystem;
-using NPOI.HPSF;
-using System.IO;
-
 
 namespace ProyectoExcel.Controllers
 {
@@ -53,9 +19,37 @@ namespace ProyectoExcel.Controllers
         { 
 
         }
-   
-   
+        public IActionResult Index()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Nombre");
+            dt.Columns.Add("Telefono");
+            dt.Columns.Add("Edad");
 
-      
+            DataRow dr = dt.NewRow();
+            dr["Nombre"] = "Omar";
+            dr["Telefono"] = "3142970790";
+            dr["Edad"] = "29";
+
+            DataRow dr2 = dt.NewRow();
+            dr2["Nombre"] = "Andres";
+            dr2["Telefono"] = "3142970790";
+            dr2["Edad"] = "26";
+            dt.Rows.Add(dr);
+            dt.Rows.Add(dr2);
+
+            using (var libro = new XLWorkbook())
+            {
+                dt.TableName = "Clientes";
+                var hoja = libro.Worksheets.Add(dt);
+                hoja.ColumnsUsed().AdjustToContents();
+                using (var memoria = new MemoryStream())
+                {
+                    libro.SaveAs(memoria);
+                    var nombreExcel = string.Concat("Reporte", "xlsx");
+                    return File(memoria.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreExcel);
+                }
+            }
+        }
     }
 }
